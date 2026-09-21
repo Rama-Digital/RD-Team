@@ -1,0 +1,32 @@
+[Unit]
+Description=RD-Team private connection to Wulan models
+Wants=network-online.target
+After=network-online.target
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+DynamicUser=yes
+User=rdteam-tunnel
+Slice=user-1001.slice
+LoadCredential=ssh-key:/etc/rd-team-agent/wulan-tunnel.key
+LoadCredential=known-hosts:/etc/rd-team-agent/wulan-known-hosts
+ExecStart=/usr/bin/ssh -F /dev/null -NT -p 42022 -i %d/ssh-key -o IdentitiesOnly=yes -o BatchMode=yes -o StrictHostKeyChecking=yes -o UserKnownHostsFile=%d/known-hosts -o GlobalKnownHostsFile=/dev/null -o ExitOnForwardFailure=yes -o ConnectTimeout=15 -o ServerAliveInterval=30 -o ServerAliveCountMax=3 -L 127.0.0.1:20129:127.0.0.1:20129 rd-team-tunnel@43.134.80.171
+Restart=always
+RestartSec=5
+TimeoutStopSec=15
+UMask=0077
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes
+ProtectKernelTunables=yes
+ProtectKernelModules=yes
+ProtectControlGroups=yes
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+CapabilityBoundingSet=
+MemoryMax=128M
+TasksMax=32
+
+[Install]
+WantedBy=multi-user.target

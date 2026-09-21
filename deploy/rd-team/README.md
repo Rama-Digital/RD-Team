@@ -33,8 +33,9 @@ Pesan `This community is empty` pada web merujuk pada repositori Git, bukan kana
 ## Batas pemasangan ini
 
 Relay, PostgreSQL, Redis, MinIO, penyimpanan Git, dan Cloudflare Tunnel berjalan di VPS.
-AI agent belum dikonfigurasi. Agent memerlukan runtime serta akun atau API key penyedia AI.
-Relay yang hidup terus tidak otomatis menjalankan agent ketika komputer pemilik mati.
+Agent bersama `RD-Team` berjalan terus di VPS dan memakai model dari server Wulan.
+Agent lokal Desktop memakai penyedia yang sama lewat Tailscale.
+Lihat [konfigurasi AI dan operasi agent](AI.md) untuk model, timeout, cadangan, dan pemulihan.
 Push notification mobile belum diaktifkan.
 Pemasangan ini belum mencakup cadangan otomatis di lokasi lain.
 
@@ -43,8 +44,9 @@ Pemasangan ini belum mencakup cadangan otomatis di lokasi lain.
 SSH `server-rama-team` menuju VPS yang sama dengan `server-hermestrading`.
 Alias lama tetap tersedia.
 
-Semua layanan RD-Team memakai user Linux `rdteam` dan Docker rootless.
-Data berada di direktori user tersebut dan volume Compose `rd-team_*`.
+Relay dan penyimpanannya memakai user Linux `rdteam` dan Docker rootless.
+Agent dan tunnel AI memakai akun layanan tersendiri dalam batas sumber daya RD-Team yang sama.
+Data relay berada di direktori user tersebut dan volume Compose `rd-team_*`.
 Layanan tidak membutuhkan perubahan firewall atau port publik tambahan.
 Cloudflare Tunnel membuka koneksi keluar dan meneruskan trafik ke loopback.
 
@@ -56,7 +58,8 @@ Cloudflare Tunnel membuka koneksi keluar dan meneruskan trafik ke loopback.
 | MinIO | 768 MiB | 0.5 CPU |
 | Seluruh user RD-Team | 6 GiB, ambang tekanan 5 GiB | 2 CPU |
 
-Batas gabungan juga mencakup Docker dan tunnel. Bobot CPU dan I/O memakai nilai 50.
+Batas gabungan mencakup Docker, tunnel Cloudflare, agent AI, dan tunnel SSH.
+Bobot CPU dan I/O memakai nilai 50.
 Port relay `127.0.0.1:18300`, readiness `127.0.0.1:18380`, dan metrik tunnel `127.0.0.1:18400` hanya tersedia lokal.
 
 Runtime memakai Docker 29.8.1, Compose 5.5.1, dan cloudflared 2026.9.1.
@@ -136,6 +139,13 @@ systemctl --user start cloudflared
 ```
 
 Jangan menjalankan perintah terhadap layanan, timer, repository, atau data HermesTrading.
+
+## Jika undangan menampilkan Failed to fetch
+
+Relay harus mengizinkan origin aplikasi Desktop dalam `BUZZ_CORS_ORIGINS`.
+Override deployment mencakup situs serta `tauri://localhost`, `http://tauri.localhost`, dan `https://tauri.localhost`.
+Izin origin tidak menggantikan autentikasi anggota atau tanda tangan klaim undangan.
+Anggota tim tidak memerlukan Tailscale atau API key untuk bergabung.
 
 ## Pengembangan fork
 

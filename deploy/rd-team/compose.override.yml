@@ -3,6 +3,8 @@ services:
     image: ghcr.io/block/buzz@sha256:4a8c93245921a891832b12fc35dbf364a419175b24af46ecdb5939a166d8aa26
     env_file: !override
       - /home/rdteam/.config/rd-team/relay.env
+    environment:
+      BUZZ_CORS_ORIGINS: "https://team.growc.id,tauri://localhost,http://tauri.localhost,https://tauri.localhost"
     ports: !override
       - "127.0.0.1:18300:3000"
       - "127.0.0.1:18380:8080"

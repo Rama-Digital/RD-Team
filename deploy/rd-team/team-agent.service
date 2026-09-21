@@ -1,0 +1,38 @@
+[Unit]
+Description=RD-Team shared Buzz agent
+Wants=network-online.target rd-team-ai-tunnel.service
+After=network-online.target rd-team-ai-tunnel.service
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+DynamicUser=yes
+User=rdteam-agent
+Slice=user-1001.slice
+StateDirectory=rd-team-agent
+StateDirectoryMode=0700
+WorkingDirectory=/var/lib/rd-team-agent
+Environment=HOME=/var/lib/rd-team-agent
+Environment=PATH=/opt/rd-team/bin:/usr/local/bin:/usr/bin:/bin
+EnvironmentFile=/etc/rd-team-agent/agent.env
+ExecStart=/opt/rd-team/bin/buzz-acp
+Restart=always
+RestartSec=10
+TimeoutStopSec=30
+UMask=0077
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=yes
+InaccessiblePaths=-/opt/hermestrading.id
+PrivateTmp=yes
+ProtectKernelTunables=yes
+ProtectKernelModules=yes
+ProtectControlGroups=yes
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+CapabilityBoundingSet=
+MemoryHigh=1G
+MemoryMax=1536M
+TasksMax=256
+
+[Install]
+WantedBy=multi-user.target

@@ -50,4 +50,5 @@ Tanggal: 21 September 2026.
 Perubahan repository hanya menambah konfigurasi deployment, skrip operasional, dan dokumentasi.
 Shell syntax, JSON, konfigurasi Compose, unit systemd, dan whitespace diperiksa.
 Tidak ada perubahan kode aplikasi. Suite Rust, desktop, dan mobile tidak dijalankan.
-AI agent dan push notification belum dikonfigurasi.
+Hasil di atas merekam bootstrap relay. AI ditambahkan sesudahnya; lihat [verifikasi AI](AI.md#verifikasi).
+Push notification belum dikonfigurasi.
