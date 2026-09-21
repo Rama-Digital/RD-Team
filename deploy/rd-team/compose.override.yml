@@ -1,0 +1,33 @@
+services:
+  relay:
+    image: ghcr.io/block/buzz@sha256:4a8c93245921a891832b12fc35dbf364a419175b24af46ecdb5939a166d8aa26
+    env_file: !override
+      - /home/rdteam/.config/rd-team/relay.env
+    ports: !override
+      - "127.0.0.1:18300:3000"
+      - "127.0.0.1:18380:8080"
+    mem_limit: 2g
+    cpus: 1.0
+    pids_limit: 256
+
+  postgres:
+    image: postgres:17-alpine@sha256:b0f9560a2de083e2cc7382e75f808c7381a32852a7ec49117deedb300e552b24
+    mem_limit: 1536m
+    cpus: 0.5
+    pids_limit: 256
+
+  redis:
+    image: redis:7-alpine@sha256:520775a41a63e77e06c73e35d2fd9cc15921a609516818796b4ecbb813078bc7
+    mem_limit: 384m
+    cpus: 0.25
+    pids_limit: 128
+
+  minio:
+    mem_limit: 768m
+    cpus: 0.5
+    pids_limit: 256
+
+  minio-init:
+    mem_limit: 128m
+    cpus: 0.25
+    pids_limit: 64

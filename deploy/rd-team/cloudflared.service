@@ -1,0 +1,16 @@
+[Unit]
+Description=RD-Team Cloudflare Tunnel
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+ExecStart=%h/bin/cloudflared tunnel --no-autoupdate --metrics 127.0.0.1:18400 run --token-file %h/.config/cloudflared/rd-team.token
+Restart=on-failure
+RestartSec=5
+NoNewPrivileges=yes
+PrivateTmp=yes
+ProtectSystem=strict
+ProtectHome=read-only
+
+[Install]
+WantedBy=default.target

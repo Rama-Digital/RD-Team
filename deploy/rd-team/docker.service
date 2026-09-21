@@ -1,0 +1,20 @@
+[Unit]
+Description=RD-Team rootless Docker
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Environment=PATH=%h/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+Environment=DOCKERD_ROOTLESS_ROOTLESSKIT_NET=slirp4netns
+ExecStart=%h/bin/dockerd-rootless.sh --host=unix://%t/docker.sock
+Restart=on-failure
+RestartSec=5
+TimeoutStartSec=120
+TimeoutStopSec=120
+Delegate=yes
+KillMode=mixed
+LimitNOFILE=1048576
+TasksMax=2048
+
+[Install]
+WantedBy=default.target
